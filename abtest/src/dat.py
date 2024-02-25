@@ -1,5 +1,7 @@
 from pandas import read_csv
+from numpy import argmin
 from statsmodels.stats.proportion import proportions_ztest, proportion_confint
+
 
 class ABTestAnalyzer:
     def __init__(self, file_path):
@@ -12,6 +14,7 @@ class ABTestAnalyzer:
         self.data = self.load_data(file_path)
         self.n_control = len(self.data[self.data['group'] == 'control'])
         self.n_treatment = len(self.data[self.data['group'] == 'treatment'])
+        self.n_max = min(self.n_control, self.n_treatment)
     
     def load_data(self, file_path):
         """
@@ -63,7 +66,7 @@ class ABTestAnalyzer:
         print("-" * N_DASHES)
 
 
-    def run_abtest(self, N_sample, alpha=0.05):
+    def run_abtest(self, N_sample: None | int, alpha=0.05):
         """
         Perform A/B test given a sample size and alpha value.
         
@@ -74,6 +77,13 @@ class ABTestAnalyzer:
         Returns:
         - p_value: The p-value resulting from the A/B test
         """
+        if N_sample is None:
+            print(f'No sample size provided using maximum available ({self.n_max}).')
+            N_sample = self.n_max
+        elif N_sample > self.n_max:
+            print(f'Sample size provided is too high. Using maximum available ({self.n_max}).')
+            N_sample = self.n_max
+
         # Randomly sample control and treatment groups
         control_sample = self.data[self.data['group'] == 'control'].sample(n=N_sample, random_state=42)
         treatment_sample = self.data[self.data['group'] == 'treatment'].sample(n=N_sample, random_state=42)
