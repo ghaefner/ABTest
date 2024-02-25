@@ -29,17 +29,21 @@ class ABTestAnalyzer:
         Returns:
         None
         """
-        print("-" * 20)
+        N_DASHES = 40
+        print("-" * N_DASHES)
         print("Shape of DataFrame:")
         print(self.data.shape)
-        print("-" * 20)
+        print("-" * N_DASHES)
         print("Column Names:")
         print(self.data.columns)
-        print("-" * 20)
+        print("-" * N_DASHES)
+        print("Unique Entries:")
+        print(self.data.nunique())
+        print("-" * N_DASHES)
         print("Check for NA values:")
         print(self.data.isna().sum())
-        print("-" * 20)
+        print("-" * N_DASHES)
         print("Number of Records in Control and Treatment Group:")
         print("Control Group:", len(self.data[self.data['group'] == 'control']))
         print("Treatment Group:", len(self.data[self.data['group'] == 'treatment']))
-        print("-" * 20)
+        print("-" * N_DASHES)
