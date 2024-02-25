@@ -22,6 +22,17 @@ class ABTestAnalyzer:
         """
         return read_csv(file_path)
     
+    def drop_duplicates(self, col_name='user_id'):
+        """
+        Drop duplicate records based on a provided column (default: 'user_id')
+        
+        Returns:
+        - DataFrame: DataFrame with duplicate records removed
+        """
+
+        self.data = self.data.drop_duplicates(subset=col_name)
+        return self.data
+    
     def print_data_info(self):
         """
         Print a general overview of the data.
