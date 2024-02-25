@@ -12,9 +12,14 @@ class ABTestAnalyzer:
         - file_path: Path to the CSV file containing the data
         """
         self.data = self.load_data(file_path)
+
+        # Attributes for sample sizes
         self.n_control = len(self.data[self.data['group'] == 'control'])
         self.n_treatment = len(self.data[self.data['group'] == 'treatment'])
         self.n_max = min(self.n_control, self.n_treatment)
+
+        # Constant for printing
+        self.N_DASH = 40
     
     def load_data(self, file_path):
         """
@@ -46,24 +51,24 @@ class ABTestAnalyzer:
         Returns:
         None
         """
-        N_DASHES = 40
-        print("-" * N_DASHES)
+        self.N_DASH = 40
+        print("-" * self.N_DASH)
         print("Shape of DataFrame:")
         print(self.data.shape)
-        print("-" * N_DASHES)
+        print("-" * self.N_DASH)
         print("Column Names:")
         print(self.data.columns)
-        print("-" * N_DASHES)
+        print("-" * self.N_DASH)
         print("Unique Entries:")
         print(self.data.nunique())
-        print("-" * N_DASHES)
+        print("-" * self.N_DASH)
         print("Check for NA values:")
         print(self.data.isna().sum())
-        print("-" * N_DASHES)
+        print("-" * self.N_DASH)
         print("Number of Records in Control and Treatment Group:")
         print("Control Group:", self.n_control)
         print("Treatment Group:", self.n_treatment)
-        print("-" * N_DASHES)
+        print("-" * self.N_DASH)
 
 
     def run_abtest(self, N_sample: None | int, alpha=0.05):
@@ -96,11 +101,11 @@ class ABTestAnalyzer:
         z_score, p_value = proportions_ztest([control_sample['converted'].sum(), treatment_sample['converted'].sum()], 
                                              [len(control_sample), len(treatment_sample)])
         
-        # Print conversion rates
+        # Print output
+        print('-'*self.N_DASH)
         print("Control Conversion Rate:", control_conversion_rate)
         print("Treatment Conversion Rate:", treatment_conversion_rate)
-        
-        # Print p-value
         print("P-value for A/B test:", p_value)
-        
+        print('-'*self.N_DASH)
+
         return p_value
