@@ -1,4 +1,5 @@
 from pandas import read_csv
+from statsmodels.stats.proportion import proportions_ztest, proportion_confint
 
 class ABTestAnalyzer:
     def __init__(self, file_path):
@@ -58,3 +59,36 @@ class ABTestAnalyzer:
         print("Control Group:", len(self.data[self.data['group'] == 'control']))
         print("Treatment Group:", len(self.data[self.data['group'] == 'treatment']))
         print("-" * N_DASHES)
+
+
+    def run_abtest(self, N_sample, alpha=0.05):
+        """
+        Perform A/B test given a sample size and alpha value.
+        
+        Args:
+        - N_sample: Sample size for both control and treatment groups
+        - alpha: Alpha value for the significance level (default is 0.05)
+        
+        Returns:
+        - p_value: The p-value resulting from the A/B test
+        """
+        # Randomly sample control and treatment groups
+        control_sample = self.data[self.data['group'] == 'control'].sample(n=N_sample, random_state=42)
+        treatment_sample = self.data[self.data['group'] == 'treatment'].sample(n=N_sample, random_state=42)
+        
+        # Calculate individual conversion rates
+        control_conversion_rate = control_sample['converted'].mean()
+        treatment_conversion_rate = treatment_sample['converted'].mean()
+        
+        # Perform A/B test
+        z_score, p_value = proportions_ztest([control_sample['converted'].sum(), treatment_sample['converted'].sum()], 
+                                             [len(control_sample), len(treatment_sample)])
+        
+        # Print conversion rates
+        print("Control Conversion Rate:", control_conversion_rate)
+        print("Treatment Conversion Rate:", treatment_conversion_rate)
+        
+        # Print p-value
+        print("P-value for A/B test:", p_value)
+        
+        return p_value
