@@ -10,6 +10,8 @@ class ABTestAnalyzer:
         - file_path: Path to the CSV file containing the data
         """
         self.data = self.load_data(file_path)
+        self.n_control = len(self.data[self.data['group'] == 'control'])
+        self.n_treatment = len(self.data[self.data['group'] == 'treatment'])
     
     def load_data(self, file_path):
         """
@@ -56,8 +58,8 @@ class ABTestAnalyzer:
         print(self.data.isna().sum())
         print("-" * N_DASHES)
         print("Number of Records in Control and Treatment Group:")
-        print("Control Group:", len(self.data[self.data['group'] == 'control']))
-        print("Treatment Group:", len(self.data[self.data['group'] == 'treatment']))
+        print("Control Group:", self.n_control)
+        print("Treatment Group:", self.n_treatment)
         print("-" * N_DASHES)
 
 
