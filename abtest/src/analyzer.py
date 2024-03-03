@@ -1,7 +1,7 @@
 from pandas import read_csv, crosstab
 from numpy import argmin
 from statsmodels.stats.proportion import proportions_ztest, proportion_confint
-from scipy.stats import chi2_contingency
+from scipy.stats import chi2_contingency, mannwhitneyu
 
 
 class ABTestAnalyzer:
@@ -129,5 +129,33 @@ class ABTestAnalyzer:
         print("P-value for Chi-squared test:", p_value)
         print("Chi-square: ", chi2_stat)
         print('-'*self.N_DASH)
+
+        return p_value
+    
+    def run_utest(self, N_sample=None):
+        """
+        Perform an alternative A/B test using Mann-Whitney U test.
+        
+        Args:
+        - N_sample: Sample size for both control and treatment groups. If None, use full data.
+        - alpha: Alpha value for the significance level (default is 0.05)
+        
+        Returns:
+        - p_value: The p-value resulting from the alternative A/B test
+        """
+        if N_sample is None:
+            control_sample = self.data[self.data['group'] == 'control']['converted']
+            treatment_sample = self.data[self.data['group'] == 'treatment']['converted']
+        else:
+            control_sample = self.data[self.data['group'] == 'control'].sample(n=N_sample, random_state=42)['converted']
+            treatment_sample = self.data[self.data['group'] == 'treatment'].sample(n=N_sample, random_state=42)['converted']
+        
+        # Perform Mann-Whitney U test
+        stat, p_value = mannwhitneyu(control_sample, treatment_sample)
+        
+        # Print p-value
+        print("-"*self.N_DASH)
+        print("P-value for Mann-Whitney U test:", p_value)
+        print("-"*self.N_DASH)
 
         return p_value
