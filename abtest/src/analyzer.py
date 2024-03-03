@@ -1,6 +1,7 @@
-from pandas import read_csv
+from pandas import read_csv, crosstab
 from numpy import argmin
 from statsmodels.stats.proportion import proportions_ztest, proportion_confint
+from scipy.stats import chi2_contingency
 
 
 class ABTestAnalyzer:
@@ -109,5 +110,24 @@ class ABTestAnalyzer:
         print('-'*self.N_DASH)
 
         return p_value
-    
-    def run_chi(self, n_sample: None | int, alpha)
+          
+    def run_chisquare(self):
+        """
+        Perform A/B test using Chi-squared test for independence.
+        
+        Returns:
+        - p_value: The p-value resulting from the Chi-squared test
+        """
+        # Create a contingency table
+        contingency_table = crosstab(self.data['group'], self.data['converted'])
+        
+        # Perform Chi-squared test
+        chi2_stat, p_value, _, _ = chi2_contingency(contingency_table)
+        
+        # Print p-value
+        print('-'*self.N_DASH)
+        print("P-value for A/B test (Chi-squared test):", p_value)
+        print("Chi2_stat: ", chi2_stat)
+        print('-'*self.N_DASH)
+
+        return p_value
