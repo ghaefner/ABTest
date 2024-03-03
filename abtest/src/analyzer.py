@@ -126,8 +126,8 @@ class ABTestAnalyzer:
         
         # Print p-value
         print('-'*self.N_DASH)
-        print("P-value for A/B test (Chi-squared test):", p_value)
-        print("Chi2_stat: ", chi2_stat)
+        print("P-value for Chi-squared test:", p_value)
+        print("Chi-square: ", chi2_stat)
         print('-'*self.N_DASH)
 
         return p_value
