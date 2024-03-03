@@ -159,3 +159,15 @@ class ABTestAnalyzer:
         print("-"*self.N_DASH)
 
         return p_value
+    
+    def run_all(self, N_sample=None):
+        p_value_ztest = self.run_ztest(self, N_sample=N_sample)
+        p_value_chisquare = self.run_chisquare(self)
+        p_value_utest = self.run_utest(self, N_sample=N_sample)
+
+        print("-"*self.N_DASH)
+        print("A/B-Testing Results:")
+        print("P-value of z-test: ", p_value_ztest)
+        print("P-value of chi-square test: ", p_value_chisquare)
+        print("P-value of u-test: ", p_value_utest)
+        print("-"*self.N_DASH)
