@@ -71,7 +71,7 @@ class ABTestAnalyzer:
         print("-" * self.N_DASH)
 
 
-    def run_abtest(self, N_sample: None | int, alpha=0.05):
+    def run_p(self, N_sample: None | int, alpha=0.05):
         """
         Perform A/B test given a sample size and alpha value.
         
@@ -98,7 +98,7 @@ class ABTestAnalyzer:
         treatment_conversion_rate = treatment_sample['converted'].mean()
         
         # Perform A/B test
-        z_score, p_value = proportions_ztest([control_sample['converted'].sum(), treatment_sample['converted'].sum()], 
+        _, p_value = proportions_ztest([control_sample['converted'].sum(), treatment_sample['converted'].sum()], 
                                              [len(control_sample), len(treatment_sample)])
         
         # Print output
