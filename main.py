@@ -1,4 +1,4 @@
-from src.analyzer import ABTestAnalyzer
+from abtest.src.analyzer import ABTestAnalyzer
 
 
 analyzer = ABTestAnalyzer(file_path="abtest/data/ab_data.csv")
