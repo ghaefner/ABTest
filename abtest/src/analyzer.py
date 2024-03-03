@@ -72,7 +72,7 @@ class ABTestAnalyzer:
         print("-" * self.N_DASH)
 
 
-    def run_ztest(self, N_sample: None | int, alpha=0.05):
+    def run_ztest(self, N_sample=None):
         """
         Perform A/B test given a sample size and alpha value.
         
